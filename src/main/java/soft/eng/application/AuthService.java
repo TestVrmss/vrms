@@ -5,9 +5,7 @@ import java.util.Optional;
 import soft.eng.domain.model.Manager;
 import soft.eng.persistence.ManagerRepository;
 
-/**
- * Handles manager authentication operations.
- */
+
 public class AuthService {
 
     /**
