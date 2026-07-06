@@ -8,9 +8,7 @@ import soft.eng.persistence.ManagerRepository;
 
 public class AuthService {
 
-    /**
-     * The manager repository.
-     */
+    
     private final ManagerRepository managerRepository;
 
     /**
