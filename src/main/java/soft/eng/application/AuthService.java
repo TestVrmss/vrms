@@ -11,27 +11,15 @@ public class AuthService {
     
     private final ManagerRepository managerRepository;
 
-    /**
-     * The currently logged-in manager.
-     */
+    
     private Manager loggedInManager;
 
-    /**
-     * Creates a new authentication service.
-     *
-     * @param managerRepository the manager repository
-     */
+    
     public AuthService(ManagerRepository managerRepository) {
         this.managerRepository = managerRepository;
     }
 
-    /**
-     * Logs in a manager using username and password.
-     *
-     * @param username the username
-     * @param password the password
-     * @return true if login succeeds, otherwise false
-     */
+    
     public boolean login(String username, String password) {
         Optional<Manager> manager = managerRepository.findByUsername(username);
 

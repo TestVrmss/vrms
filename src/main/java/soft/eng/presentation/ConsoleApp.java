@@ -14,16 +14,10 @@ import soft.eng.persistence.InMemoryManagerRepository;
 import soft.eng.persistence.InMemoryRentalRepository;
 import soft.eng.persistence.InMemoryVehicleRepository;
 
-/**
- * A simple console application to demonstrate Phase 1 features.
- */
+
 public class ConsoleApp {
 
-    /**
-     * Runs a simple demonstration of the vehicle rental system.
-     *
-     * @param args command line arguments
-     */
+   
     public static void main(String[] args) {
         InMemoryManagerRepository managerRepository = new InMemoryManagerRepository();
         InMemoryVehicleRepository vehicleRepository = new InMemoryVehicleRepository();
