@@ -8,27 +8,18 @@ import org.junit.jupiter.api.Test;
 
 import soft.eng.persistence.InMemoryManagerRepository;
 
-/**
- * Unit tests for AuthService.
- */
+
 class AuthServiceTest {
 
-    /**
-     * The authentication service under test.
-     */
     private AuthService authService;
 
-    /**
-     * Initializes test dependencies.
-     */
+    
     @BeforeEach
     void setUp() {
         authService = new AuthService(new InMemoryManagerRepository());
     }
 
-    /**
-     * Tests login with valid credentials.
-     */
+   
     @Test
     void loginWithValidCredentialsShouldSucceed() {
         boolean result = authService.login("admin", "admin123");
@@ -37,9 +28,7 @@ class AuthServiceTest {
         assertTrue(authService.isLoggedIn());
     }
 
-    /**
-     * Tests login with invalid credentials.
-     */
+    
     @Test
     void loginWithInvalidCredentialsShouldFail() {
         boolean result = authService.login("admin", "wrong-password");
@@ -48,9 +37,7 @@ class AuthServiceTest {
         assertFalse(authService.isLoggedIn());
     }
 
-    /**
-     * Tests logout.
-     */
+    
     @Test
     void logoutShouldEndCurrentSession() {
         authService.login("admin", "admin123");

@@ -18,44 +18,27 @@ import soft.eng.persistence.InMemoryManagerRepository;
 import soft.eng.persistence.InMemoryRentalRepository;
 import soft.eng.persistence.InMemoryVehicleRepository;
 
-/**
- * Unit tests for RentalService.
- */
+
 class RentalServiceTest {
 
-    /**
-     * The authentication service.
-     */
+    
     private AuthService authService;
 
-    /**
-     * The vehicle repository.
-     */
+    
     private InMemoryVehicleRepository vehicleRepository;
 
-    /**
-     * The rental repository.
-     */
     private InMemoryRentalRepository rentalRepository;
 
-    /**
-     * The rental service under test.
-     */
+    
     private RentalService rentalService;
 
-    /**
-     * The test customer.
-     */
+    
     private Customer customer;
 
-    /**
-     * The test vehicle.
-     */
+    
     private Vehicle vehicle;
 
-    /**
-     * Initializes test dependencies.
-     */
+    
     @BeforeEach
     void setUp() {
         authService = new AuthService(new InMemoryManagerRepository());
@@ -70,9 +53,7 @@ class RentalServiceTest {
         authService.login("admin", "admin123");
     }
 
-    /**
-     * Tests creating a rental and changing vehicle status to rented.
-     */
+   
     @Test
     void rentVehicleShouldCreateRentalAndMarkVehicleAsRented() {
         Rental rental = rentalService.rentVehicle(
@@ -88,9 +69,7 @@ class RentalServiceTest {
         assertEquals(VehicleStatus.RENTED, vehicle.getStatus());
     }
 
-    /**
-     * Tests that double booking is rejected.
-     */
+   
     @Test
     void rentVehicleTwiceShouldRejectDoubleBooking() {
         rentalService.rentVehicle(
@@ -108,9 +87,7 @@ class RentalServiceTest {
         ));
     }
 
-    /**
-     * Tests that rental duration cannot be less than one day.
-     */
+    
     @Test
     void rentVehicleWithZeroDaysShouldBeRejected() {
         assertThrows(IllegalArgumentException.class, () -> rentalService.rentVehicle(
@@ -121,9 +98,7 @@ class RentalServiceTest {
         ));
     }
 
-    /**
-     * Tests that rental duration cannot exceed thirty days.
-     */
+    
     @Test
     void rentVehicleForMoreThanThirtyDaysShouldBeRejected() {
         assertThrows(IllegalArgumentException.class, () -> rentalService.rentVehicle(
@@ -134,9 +109,7 @@ class RentalServiceTest {
         ));
     }
 
-    /**
-     * Tests that renting requires manager login.
-     */
+   
     @Test
     void rentVehicleWithoutLoginShouldThrowException() {
         authService.logout();

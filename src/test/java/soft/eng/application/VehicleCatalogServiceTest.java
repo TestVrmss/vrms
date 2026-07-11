@@ -13,29 +13,19 @@ import soft.eng.domain.model.Vehicle;
 import soft.eng.persistence.InMemoryManagerRepository;
 import soft.eng.persistence.InMemoryVehicleRepository;
 
-/**
- * Unit tests for VehicleCatalogService.
- */
+
 class VehicleCatalogServiceTest {
 
-    /**
-     * The authentication service.
-     */
+   
     private AuthService authService;
 
-    /**
-     * The vehicle repository.
-     */
+   
     private InMemoryVehicleRepository vehicleRepository;
 
-    /**
-     * The vehicle catalog service under test.
-     */
+   
     private VehicleCatalogService vehicleCatalogService;
 
-    /**
-     * Initializes test dependencies.
-     */
+    
     @BeforeEach
     void setUp() {
         authService = new AuthService(new InMemoryManagerRepository());
@@ -43,9 +33,7 @@ class VehicleCatalogServiceTest {
         vehicleCatalogService = new VehicleCatalogService(authService, vehicleRepository);
     }
 
-    /**
-     * Tests that only available vehicles are displayed.
-     */
+   
     @Test
     void getAvailableVehiclesShouldReturnOnlyAvailableVehicles() {
         authService.login("admin", "admin123");
@@ -63,9 +51,7 @@ class VehicleCatalogServiceTest {
         assertEquals("V1", availableVehicles.get(0).getId());
     }
 
-    /**
-     * Tests that protected catalog actions require login.
-     */
+    
     @Test
     void getAvailableVehiclesWithoutLoginShouldThrowException() {
         assertThrows(IllegalStateException.class, () -> vehicleCatalogService.getAvailableVehicles());

@@ -21,37 +21,24 @@ import soft.eng.infrastructure.DateTimeProvider;
 import soft.eng.infrastructure.NotificationService;
 import soft.eng.persistence.InMemoryRentalRepository;
 
-/**
- * Unit tests for RentalReminderService.
- */
+
 @ExtendWith(MockitoExtension.class)
 class RentalReminderServiceTest {
 
-    /**
-     * Mock notification service.
-     */
+    
     @Mock
     private NotificationService notificationService;
 
-    /**
-     * Mock date time provider.
-     */
     @Mock
     private DateTimeProvider dateTimeProvider;
 
-    /**
-     * The rental repository.
-     */
+   
     private InMemoryRentalRepository rentalRepository;
 
-    /**
-     * The rental reminder service under test.
-     */
+   
     private RentalReminderService rentalReminderService;
 
-    /**
-     * Initializes test dependencies.
-     */
+    
     @BeforeEach
     void setUp() {
         rentalRepository = new InMemoryRentalRepository();
@@ -62,9 +49,6 @@ class RentalReminderServiceTest {
         );
     }
 
-    /**
-     * Tests that a reminder is sent for rentals ending tomorrow.
-     */
     @Test
     void sendExpiryRemindersForTomorrowShouldSendReminder() {
         LocalDate today = LocalDate.of(2026, 1, 1);
@@ -79,9 +63,7 @@ class RentalReminderServiceTest {
         verify(notificationService).sendRentalExpiryReminder(rental);
     }
 
-    /**
-     * Tests that no reminder is sent when rental does not end tomorrow.
-     */
+    
     @Test
     void sendExpiryRemindersForTomorrowShouldIgnoreOtherRentals() {
         LocalDate today = LocalDate.of(2026, 1, 1);
@@ -96,13 +78,7 @@ class RentalReminderServiceTest {
         verifyNoInteractions(notificationService);
     }
 
-    /**
-     * Creates a rental for testing.
-     *
-     * @param rentalId the rental id
-     * @param endDate  the rental end date
-     * @return a rental
-     */
+  
     private Rental createRental(String rentalId, LocalDate endDate) {
         Customer customer = new Customer("C1", "Ahmad Ali", 25);
         Vehicle vehicle = new Vehicle("V1", "123-ABC", "Toyota", "Corolla", BigDecimal.valueOf(50));
