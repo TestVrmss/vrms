@@ -1,7 +1,9 @@
 package soft.eng.application;
 
 import java.time.LocalDate;
-
+import java.util.List;
+import java.util.Objects;
+import java.time.LocalDate;
 import soft.eng.domain.model.Rental;
 import soft.eng.infrastructure.DateTimeProvider;
 import soft.eng.infrastructure.NotificationService;
@@ -12,7 +14,6 @@ public class RentalReminderService {
 
     private final RentalRepository rentalRepository;
 
-   
     private final NotificationService notificationService;
 
    

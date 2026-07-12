@@ -3,7 +3,6 @@ package soft.eng.application;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
-
 import soft.eng.domain.model.Customer;
 import soft.eng.domain.model.Rental;
 import soft.eng.domain.model.Vehicle;

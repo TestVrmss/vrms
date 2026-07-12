@@ -31,25 +31,17 @@ public class AuthService {
         return false;
     }
 
-    /**
-     * Logs out the current manager.
-     */
+  
     public void logout() {
         loggedInManager = null;
     }
 
-    /**
-     * Checks whether a manager is logged in.
-     *
-     * @return true if logged in, otherwise false
-     */
+    
     public boolean isLoggedIn() {
         return loggedInManager != null;
     }
 
-    /**
-     * Requires a manager to be logged in before performing a protected action.
-     */
+   
     public void requireLogin() {
         if (!isLoggedIn()) {
             throw new IllegalStateException("Manager must login first.");
