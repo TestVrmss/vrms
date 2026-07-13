@@ -1,52 +1,47 @@
 package soft.eng.persistence;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-
 import soft.eng.domain.model.Rental;
 
 
-public class InMemoryRentalRepository implements RentalRepository {
+public final class InMemoryRentalRepository implements RentalRepository {
+    private final Map<String, Rental> rentals = new LinkedHashMap<>();
 
-   
-    private final Map<String, Rental> rentals = new HashMap<>();
-
-   
     @Override
     public void save(Rental rental) {
-        rentals.put(rental.getId(), rental);
+        Rental validRental = Objects.requireNonNull(rental, "rental must not be null");
+        rentals.put(validRental.getId(), validRental);
     }
 
-    
     @Override
     public Optional<Rental> findById(String id) {
-        return Optional.ofNullable(rentals.get(id));
-    }
-
-    
-    @Override
-    public Optional<Rental> findActiveByVehicleId(String vehicleId) {
-        return rentals.values()
-                .stream()
-                .filter(Rental::isActive)
-                .filter(rental -> rental.getVehicle().getId().equals(vehicleId))
-                .findFirst();
-    }
-
- 
-    @Override
-    public List<Rental> findActiveRentals() {
-        List<Rental> activeRentals = new ArrayList<>();
-
-        for (Rental rental : rentals.values()) {
-            if (rental.isActive()) {
-                activeRentals.add(rental);
-            }
+        if (id == null) {
+            return Optional.empty();
         }
+        return Optional.ofNullable(rentals.get(id.trim()));
+    }
 
-        return activeRentals;
+    @Override
+    public List<Rental> findAll() {
+        return new ArrayList<>(rentals.values());
+    }
+
+    @Override
+    public List<Rental> findActive() {
+        return rentals.values().stream().filter(Rental::isActive).toList();
+    }
+
+    @Override
+    public boolean existsActiveRentalForVehicle(String vehicleId) {
+        if (vehicleId == null) {
+            return false;
+        }
+        return rentals.values().stream()
+                .anyMatch(rental -> rental.isActive() && rental.getVehicle().getId().equals(vehicleId));
     }
 }

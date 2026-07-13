@@ -2,58 +2,52 @@ package soft.eng.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import soft.eng.domain.model.Car;
 import soft.eng.domain.model.Vehicle;
-import soft.eng.persistence.InMemoryManagerRepository;
-import soft.eng.persistence.InMemoryVehicleRepository;
+import soft.eng.persistence.VehicleRepository;
 
-
+@ExtendWith(MockitoExtension.class)
 class VehicleCatalogServiceTest {
 
-   
-    private AuthService authService;
+    @Mock private AuthService authService;
 
-   
-    private InMemoryVehicleRepository vehicleRepository;
+    @Mock private VehicleRepository vehicleRepository;
 
-   
-    private VehicleCatalogService vehicleCatalogService;
 
-    
-    @BeforeEach
-    void setUp() {
-        authService = new AuthService(new InMemoryManagerRepository());
-        vehicleRepository = new InMemoryVehicleRepository();
-        vehicleCatalogService = new VehicleCatalogService(authService, vehicleRepository);
+    @Test
+    void returnsAvailableVehicles() {
+        Vehicle car = new Car("1", "Toyota", "Corolla", new BigDecimal("40"));
+        when(vehicleRepository.findAvailable()).thenReturn(List.of(car));
+        VehicleCatalogService service = new VehicleCatalogService(authService, vehicleRepository);
+
+        assertEquals(List.of(car), service.getAvailableVehicles());
+        verify(authService).requireAuthenticated();
     }
 
-   
+
     @Test
-    void getAvailableVehiclesShouldReturnOnlyAvailableVehicles() {
-        authService.login("admin", "admin123");
+    void returnsAllVehicles() {
+        Vehicle car = new Car("1", "Toyota", "Corolla", new BigDecimal("40"));
+        when(vehicleRepository.findAll()).thenReturn(List.of(car));
+        VehicleCatalogService service = new VehicleCatalogService(authService, vehicleRepository);
 
-        Vehicle availableVehicle = new Vehicle("V1", "111-A", "Toyota", "Corolla", BigDecimal.valueOf(50));
-        Vehicle rentedVehicle = new Vehicle("V2", "222-B", "Honda", "Civic", BigDecimal.valueOf(60));
-        rentedVehicle.markAsRented();
-
-        vehicleRepository.save(availableVehicle);
-        vehicleRepository.save(rentedVehicle);
-
-        List<Vehicle> availableVehicles = vehicleCatalogService.getAvailableVehicles();
-
-        assertEquals(1, availableVehicles.size());
-        assertEquals("V1", availableVehicles.get(0).getId());
+        assertEquals(List.of(car), service.getAllVehicles());
+        verify(authService).requireAuthenticated();
     }
 
-    
+
     @Test
-    void getAvailableVehiclesWithoutLoginShouldThrowException() {
-        assertThrows(IllegalStateException.class, () -> vehicleCatalogService.getAvailableVehicles());
+    void constructorRejectsNullDependencies() {
+        assertThrows(NullPointerException.class, () -> new VehicleCatalogService(null, vehicleRepository));
+        assertThrows(NullPointerException.class, () -> new VehicleCatalogService(authService, null));
     }
 }

@@ -1,37 +1,31 @@
 package soft.eng.application;
 
-import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 import soft.eng.domain.model.Vehicle;
 import soft.eng.persistence.VehicleRepository;
 
 
-public class VehicleCatalogService {
+public final class VehicleCatalogService {
 
-    
     private final AuthService authService;
 
     private final VehicleRepository vehicleRepository;
 
-   
+    
     public VehicleCatalogService(AuthService authService, VehicleRepository vehicleRepository) {
-        this.authService = authService;
-        this.vehicleRepository = vehicleRepository;
+        this.authService = Objects.requireNonNull(authService, "authService must not be null");
+        this.vehicleRepository = Objects.requireNonNull(vehicleRepository, "vehicleRepository must not be null");
     }
 
-    
     public List<Vehicle> getAvailableVehicles() {
-        authService.requireLogin();
+        authService.requireAuthenticated();
+        return vehicleRepository.findAvailable();
+    }
 
-        List<Vehicle> availableVehicles = new ArrayList<>();
 
-        for (Vehicle vehicle : vehicleRepository.findAll()) {
-            if (vehicle.isAvailable()) {
-                availableVehicles.add(vehicle);
-            }
-        }
-
-        return availableVehicles;
+    public List<Vehicle> getAllVehicles() {
+        authService.requireAuthenticated();
+        return vehicleRepository.findAll();
     }
 }

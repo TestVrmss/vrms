@@ -66,9 +66,9 @@ public abstract class Vehicle {
         status = VehicleStatus.AVAILABLE;
     }
 
-//    public void sendToMaintenance() {
-//        status = VehicleStatus.MAINTENANCE;
-//    }
+    public void sendToMaintenance() {
+        status = VehicleStatus.MAINTENANCE;
+    }
 
     private static String requireText(String value, String fieldName) {
         if (value == null || value.isBlank()) {

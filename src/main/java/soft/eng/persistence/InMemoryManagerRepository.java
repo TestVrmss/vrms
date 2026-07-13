@@ -1,29 +1,35 @@
 package soft.eng.persistence;
 
-import java.util.HashMap;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-
 import soft.eng.domain.model.Manager;
 
 
-public class InMemoryManagerRepository implements ManagerRepository {
+public final class InMemoryManagerRepository implements ManagerRepository {
+    private final Map<String, Manager> managers = new LinkedHashMap<>();
 
-    private final Map<String, Manager> managers = new HashMap<>();
+    public InMemoryManagerRepository() {
+    }
+
+    public InMemoryManagerRepository(Collection<Manager> initialManagers) {
+        Objects.requireNonNull(initialManagers, "initialManagers must not be null");
+        initialManagers.forEach(this::save);
+    }
 
  
-    public InMemoryManagerRepository() {
-        save(new Manager("admin", "admin123"));
-    }
-
-   
     public void save(Manager manager) {
-        managers.put(manager.getUsername(), manager);
+        Manager validManager = Objects.requireNonNull(manager, "manager must not be null");
+        managers.put(validManager.getUsername(), validManager);
     }
 
-   
     @Override
     public Optional<Manager> findByUsername(String username) {
-        return Optional.ofNullable(managers.get(username));
+        if (username == null) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(managers.get(username.trim()));
     }
 }

@@ -1,87 +1,94 @@
 package soft.eng.application;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.UUID;
+import java.util.List;
+import java.util.Objects;
 import soft.eng.domain.model.Customer;
 import soft.eng.domain.model.Rental;
 import soft.eng.domain.model.Vehicle;
+import soft.eng.domain.strategy.RentalPricingStrategy;
+import soft.eng.domain.strategy.RentalValidationStrategy;
+import soft.eng.infrastructure.DateTimeProvider;
+import soft.eng.infrastructure.IdGenerator;
 import soft.eng.persistence.RentalRepository;
 import soft.eng.persistence.VehicleRepository;
 
 
-public class RentalService {
+public final class RentalService {
 
-    
-    private static final long MIN_RENTAL_DAYS = 1;
-
-    
-    private static final long MAX_RENTAL_DAYS = 30;
-
-   
     private final AuthService authService;
 
-    
-    private final VehicleRepository vehicleRepository;
-
-    
     private final RentalRepository rentalRepository;
 
-    
-    public RentalService(AuthService authService,
-                         VehicleRepository vehicleRepository,
-                         RentalRepository rentalRepository) {
-        this.authService = authService;
-        this.vehicleRepository = vehicleRepository;
-        this.rentalRepository = rentalRepository;
-    }
+    private final VehicleRepository vehicleRepository;
 
-    
-    public Rental rentVehicle(String vehicleId, Customer customer, LocalDate startDate, LocalDate endDate) {
-        authService.requireLogin();
-        validateRentalDates(startDate, endDate);
+    private final RentalValidationStrategy validationStrategy;
 
-        Vehicle vehicle = vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new IllegalArgumentException("Vehicle not found."));
+    private final RentalPricingStrategy pricingStrategy;
 
-        if (!vehicle.isAvailable()) {
-            throw new IllegalStateException("Vehicle is not available.");
-        }
+    private final DateTimeProvider dateTimeProvider;
 
-        if (rentalRepository.findActiveByVehicleId(vehicleId).isPresent()) {
-            throw new IllegalStateException("Vehicle already has an active rental.");
-        }
+    private final IdGenerator idGenerator;
 
-        vehicle.markAsRented();
-
-        Rental rental = new Rental(
-                UUID.randomUUID().toString(),
-                customer,
-                vehicle,
-                startDate,
-                endDate
-        );
-
-        vehicleRepository.save(vehicle);
-        rentalRepository.save(rental);
-
-        return rental;
+  
+    public RentalService(AuthService authService, RentalRepository rentalRepository,
+                         VehicleRepository vehicleRepository, RentalValidationStrategy validationStrategy,
+                         RentalPricingStrategy pricingStrategy, DateTimeProvider dateTimeProvider,
+                         IdGenerator idGenerator) {
+        this.authService = Objects.requireNonNull(authService, "authService must not be null");
+        this.rentalRepository = Objects.requireNonNull(rentalRepository, "rentalRepository must not be null");
+        this.vehicleRepository = Objects.requireNonNull(vehicleRepository, "vehicleRepository must not be null");
+        this.validationStrategy = Objects.requireNonNull(validationStrategy, "validationStrategy must not be null");
+        this.pricingStrategy = Objects.requireNonNull(pricingStrategy, "pricingStrategy must not be null");
+        this.dateTimeProvider = Objects.requireNonNull(dateTimeProvider, "dateTimeProvider must not be null");
+        this.idGenerator = Objects.requireNonNull(idGenerator, "idGenerator must not be null");
     }
 
   
-    private void validateRentalDates(LocalDate startDate, LocalDate endDate) {
-        if (startDate == null || endDate == null) {
-            throw new IllegalArgumentException("Rental dates must not be null.");
+    public Rental rentVehicle(Customer customer, String vehicleId, LocalDate startDate, LocalDate endDate) {
+        authService.requireAuthenticated();
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new IllegalArgumentException("vehicle not found: " + vehicleId));
+        if (rentalRepository.existsActiveRentalForVehicle(vehicle.getId())) {
+            throw new IllegalStateException("vehicle already has an active rental");
         }
+        validationStrategy.validate(customer, vehicle, startDate, endDate, dateTimeProvider.today());
+        Rental rental = new Rental(idGenerator.nextId(), customer, vehicle, startDate, endDate);
+        vehicle.rent();
+        vehicleRepository.save(vehicle);
+        rentalRepository.save(rental);
+        return rental;
+    }
 
-        long rentalDays = ChronoUnit.DAYS.between(startDate, endDate);
+   
+    public BigDecimal calculateRentalCost(String rentalId, LocalDate proposedReturnDate) {
+        authService.requireAuthenticated();
+        Rental rental = findRental(rentalId);
+        return pricingStrategy.calculateCost(rental, proposedReturnDate);
+    }
 
-        if (rentalDays < MIN_RENTAL_DAYS) {
-            throw new IllegalArgumentException("Rental duration must be at least one day.");
-        }
+   
+    public BigDecimal returnVehicle(String rentalId) {
+        authService.requireAuthenticated();
+        Rental rental = findRental(rentalId);
+        LocalDate returnDate = dateTimeProvider.today();
+        BigDecimal total = pricingStrategy.calculateCost(rental, returnDate);
+        rental.close(returnDate);
+        rental.getVehicle().makeAvailable();
+        rentalRepository.save(rental);
+        vehicleRepository.save(rental.getVehicle());
+        return total;
+    }
 
-        if (rentalDays > MAX_RENTAL_DAYS) {
-            throw new IllegalArgumentException("Rental duration must not exceed 30 days.");
-        }
+   
+    public List<Rental> getActiveRentals() {
+        authService.requireAuthenticated();
+        return rentalRepository.findActive();
+    }
+
+    private Rental findRental(String rentalId) {
+        return rentalRepository.findById(rentalId)
+                .orElseThrow(() -> new IllegalArgumentException("rental not found: " + rentalId));
     }
 }

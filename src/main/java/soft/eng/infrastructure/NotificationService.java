@@ -3,8 +3,8 @@ package soft.eng.infrastructure;
 import soft.eng.domain.model.Rental;
 
 
+@FunctionalInterface
 public interface NotificationService {
-
    
-    void sendRentalExpiryReminder(Rental rental);
+    void onRentalExpiryReminder(Rental rental);
 }

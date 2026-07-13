@@ -1,49 +1,81 @@
 package soft.eng.application;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import soft.eng.domain.model.Manager;
+import soft.eng.persistence.ManagerRepository;
 
-import soft.eng.persistence.InMemoryManagerRepository;
-
-
+@ExtendWith(MockitoExtension.class)
 class AuthServiceTest {
 
-    private AuthService authService;
+    @Mock private ManagerRepository managerRepository;
 
-    
+    private AuthService service;
+
+
     @BeforeEach
     void setUp() {
-        authService = new AuthService(new InMemoryManagerRepository());
+        service = new AuthService(managerRepository);
     }
 
-   
-    @Test
-    void loginWithValidCredentialsShouldSucceed() {
-        boolean result = authService.login("admin", "admin123");
 
-        assertTrue(result);
-        assertTrue(authService.isLoggedIn());
+    @Test
+    void validCredentialsLoginSuccessfully() {
+        Manager manager = new Manager("manager", "secret");
+        when(managerRepository.findByUsername("manager")).thenReturn(Optional.of(manager));
+
+        assertTrue(service.login(" manager ", "secret"));
+        assertTrue(service.isLoggedIn());
+        assertEquals(manager, service.getCurrentManager().orElseThrow());
+        verify(managerRepository).findByUsername("manager");
     }
 
-    
-    @Test
-    void loginWithInvalidCredentialsShouldFail() {
-        boolean result = authService.login("admin", "wrong-password");
 
-        assertFalse(result);
-        assertFalse(authService.isLoggedIn());
+    @Test
+    void invalidCredentialsAreRejected() {
+        Manager manager = new Manager("manager", "secret");
+        when(managerRepository.findByUsername("manager")).thenReturn(Optional.of(manager));
+        assertTrue(service.login("manager", "secret"));
+
+        assertFalse(service.login("manager", "wrong"));
+        assertFalse(service.isLoggedIn());
+        assertTrue(service.getCurrentManager().isEmpty());
     }
 
-    
+
     @Test
-    void logoutShouldEndCurrentSession() {
-        authService.login("admin", "admin123");
+    void missingAndNullCredentialsAreRejected() {
+        when(managerRepository.findByUsername("nobody")).thenReturn(Optional.empty());
+        assertFalse(service.login("nobody", "x"));
+        assertFalse(service.login(null, "x"));
+        assertFalse(service.login("manager", null));
+    }
 
-        authService.logout();
 
-        assertFalse(authService.isLoggedIn());
+    @Test
+    void logoutRequiresRelogin() {
+        Manager manager = new Manager("manager", "secret");
+        when(managerRepository.findByUsername("manager")).thenReturn(Optional.of(manager));
+        service.login("manager", "secret");
+        service.requireAuthenticated();
+        service.logout();
+        assertThrows(IllegalStateException.class, service::requireAuthenticated);
+    }
+
+
+    @Test
+    void constructorRejectsNullRepository() {
+        assertThrows(NullPointerException.class, () -> new AuthService(null));
     }
 }

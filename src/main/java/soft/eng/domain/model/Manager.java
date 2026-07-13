@@ -49,4 +49,8 @@ public final class Manager {
     public String toString() {
         return "Manager{username='" + username + "'}";
     }
+
+	public boolean hasPassword(String password2) {
+		return false;
+	}
 }
