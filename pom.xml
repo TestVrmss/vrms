@@ -9,7 +9,6 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <name>Vehicle Rental Management System</name>
-    <description>A Java Maven project for managing vehicle rentals.</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -22,7 +21,8 @@
     </properties>
 
     <dependencies>
-        <!-- JUnit 5 for unit testing -->
+
+        <!-- JUnit 5 -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -30,7 +30,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito for mocking services during tests -->
+        <!-- Mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -38,38 +38,32 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito support for JUnit 5 -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        
-        <!-- Jakarta Mail API -->
-<dependency>
-    <groupId>org.eclipse.angus</groupId>
-    <artifactId>jakarta.mail</artifactId>
-    <version>2.0.3</version>
-</dependency>
 
-<!-- Jakarta Activation -->
-<dependency>
-    <groupId>org.eclipse.angus</groupId>
-    <artifactId>angus-activation</artifactId>
-    <version>2.0.2</version>
-</dependency>
+      
+        <!-- Jakarta Mail -->
+        <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.3</version>
+        </dependency>
 
-    	<dependency>
-    		<groupId>soft.eng</groupId>
-    		<artifactId>vehicle-rental-management-system</artifactId>
-    		<version>1.0-SNAPSHOT</version>
-    	</dependency>
+        <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>angus-activation</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+
     </dependencies>
-  
+
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -80,14 +74,12 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Surefire Plugin for running JUnit 5 tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
             </plugin>
 
-            <!-- JaCoCo Plugin for code coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -106,8 +98,10 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 
