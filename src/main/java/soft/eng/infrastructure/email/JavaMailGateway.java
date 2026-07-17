@@ -36,18 +36,37 @@ public class JavaMailGateway implements MailGateway {
             return;
         }
 
-        Objects.requireNonNull(to, "to must not be null");
-        Objects.requireNonNull(subject, "subject must not be null");
-        Objects.requireNonNull(body, "body must not be null");
+        Objects.requireNonNull(
+                to,
+                "to must not be null");
+
+        Objects.requireNonNull(
+                subject,
+                "subject must not be null");
+
+        Objects.requireNonNull(
+                body,
+                "body must not be null");
 
         Properties properties = new Properties();
 
-        properties.put("mail.smtp.host", settings.getHost());
-        properties.put("mail.smtp.port", Integer.toString(settings.getPort()));
-        properties.put("mail.smtp.auth",
-                Boolean.toString(settings.isAuthenticationEnabled()));
-        properties.put("mail.smtp.starttls.enable",
-                Boolean.toString(settings.isStartTlsEnabled()));
+        properties.put(
+                "mail.smtp.host",
+                settings.getHost());
+
+        properties.put(
+                "mail.smtp.port",
+                Integer.toString(settings.getPort()));
+
+        properties.put(
+                "mail.smtp.auth",
+                Boolean.toString(
+                        settings.isAuthenticationEnabled()));
+
+        properties.put(
+                "mail.smtp.starttls.enable",
+                Boolean.toString(
+                        settings.isStartTlsEnabled()));
 
         Session session;
 
@@ -56,8 +75,11 @@ public class JavaMailGateway implements MailGateway {
             session = Session.getInstance(
                     properties,
                     new Authenticator() {
+
                         @Override
-                        protected PasswordAuthentication getPasswordAuthentication() {
+                        protected PasswordAuthentication
+                                getPasswordAuthentication() {
+
                             return new PasswordAuthentication(
                                     settings.getUsername(),
                                     settings.getPassword());
@@ -71,17 +93,24 @@ public class JavaMailGateway implements MailGateway {
 
         try {
 
-            MimeMessage message = new MimeMessage(session);
+            MimeMessage message =
+                    new MimeMessage(session);
 
             message.setFrom(
-                    new InternetAddress(settings.getFromAddress()));
+                    new InternetAddress(
+                            settings.getFromAddress()));
 
             message.setRecipients(
                     Message.RecipientType.TO,
                     InternetAddress.parse(to));
 
-            message.setSubject(subject, "UTF-8");
-            message.setText(body, "UTF-8");
+            message.setSubject(
+                    subject,
+                    "UTF-8");
+
+            message.setText(
+                    body,
+                    "UTF-8");
 
             sendMessage(message);
 
@@ -93,15 +122,10 @@ public class JavaMailGateway implements MailGateway {
         }
     }
 
-   
+    /**
+     * Hook for testing.
+     */
     protected void sendMessage(MimeMessage message)
-            throws MessagingException {
-
-        doTransportSend(message);
-    }
-
-  
-    protected void doTransportSend(MimeMessage message)
             throws MessagingException {
 
         Transport.send(message);
