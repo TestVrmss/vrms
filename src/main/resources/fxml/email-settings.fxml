@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<ScrollPane xmlns:fx="http://javafx.com/fxml" fx:controller="soft.eng.presentation.fx.EmailSettingsController"
+            fitToWidth="true" styleClass="form-scroll" stylesheets="@../css/theme.css">
+  <VBox styleClass="page-root" spacing="24">
+
+    <!-- Header -->
+    <VBox styleClass="page-header" spacing="4">
+      <Label text="📧  Email Settings" styleClass="page-title"/>
+      <Label text="Configure SMTP connection and send real emails from within the system." styleClass="page-subtitle"/>
+    </VBox>
+
+    <!-- ═══ SMTP CONFIGURATION ═══ -->
+    <VBox styleClass="form-section" spacing="16">
+      <Label text="SMTP CONFIGURATION" styleClass="field-label"/>
+
+      <!-- Enable toggle -->
+      <HBox alignment="CENTER_LEFT" spacing="10">
+        <CheckBox fx:id="chkEnabled" text="Enable Email Notifications" styleClass="form-checkbox"/>
+      </HBox>
+
+      <Separator/>
+
+      <!-- Host + Port -->
+      <HBox spacing="16">
+        <VBox spacing="6" HBox.hgrow="ALWAYS">
+          <Label text="SMTP HOST" styleClass="field-label"/>
+          <TextField fx:id="fldHost" promptText="smtp.gmail.com" styleClass="field-input"
+                     tooltip="Gmail: smtp.gmail.com | Outlook: smtp.office365.com"/>
+        </VBox>
+        <VBox spacing="6" prefWidth="120">
+          <Label text="PORT" styleClass="field-label"/>
+          <TextField fx:id="fldPort" promptText="587" styleClass="field-input"/>
+        </VBox>
+      </HBox>
+
+      <!-- Username -->
+      <VBox spacing="6">
+        <Label text="EMAIL ADDRESS (USERNAME)" styleClass="field-label"/>
+        <TextField fx:id="fldUsername" promptText="yourname@gmail.com" styleClass="field-input"/>
+      </VBox>
+
+      <!-- Password -->
+      <VBox spacing="6">
+        <Label text="PASSWORD / APP PASSWORD" styleClass="field-label"/>
+        <PasswordField fx:id="fldPassword" promptText="Enter password (not saved to file)" styleClass="field-input"/>
+        <Label text="⚠  For Gmail: use a 16-character App Password (myaccount.google.com → Security → 2-Step → App Passwords)"
+               styleClass="vehicle-info-label" wrapText="true"/>
+      </VBox>
+
+      <!-- From + Prefix -->
+      <HBox spacing="16">
+        <VBox spacing="6" HBox.hgrow="ALWAYS">
+          <Label text="FROM ADDRESS (leave blank to use username)" styleClass="field-label"/>
+          <TextField fx:id="fldFrom" promptText="same as username" styleClass="field-input"/>
+        </VBox>
+        <VBox spacing="6" prefWidth="160">
+          <Label text="SUBJECT PREFIX" styleClass="field-label"/>
+          <TextField fx:id="fldPrefix" promptText="[VRMS]" styleClass="field-input"/>
+        </VBox>
+      </HBox>
+
+      <!-- Auth + TLS -->
+      <HBox spacing="24" alignment="CENTER_LEFT">
+        <CheckBox fx:id="chkAuth"     text="SMTP Authentication" styleClass="form-checkbox"/>
+        <CheckBox fx:id="chkStartTls" text="STARTTLS Encryption"  styleClass="form-checkbox"/>
+      </HBox>
+
+      <!-- Save button -->
+      <HBox>
+        <Button text="💾  Save Configuration" styleClass="btn-primary" onAction="#handleSave" prefWidth="220"/>
+      </HBox>
+
+      <!-- Status label -->
+      <Label fx:id="lblStatus" text="" wrapText="true" maxWidth="Infinity"/>
+    </VBox>
+
+    <!-- ═══ SEND TEST EMAIL ═══ -->
+    <VBox fx:id="testPanel" styleClass="form-section" spacing="16">
+      <Label text="SEND TEST EMAIL" styleClass="field-label"/>
+
+      <!-- To -->
+      <VBox spacing="6">
+        <Label text="RECIPIENT (TO)" styleClass="field-label"/>
+        <TextField fx:id="fldTestTo" promptText="recipient@example.com" styleClass="field-input"/>
+      </VBox>
+
+      <!-- Subject -->
+      <VBox spacing="6">
+        <Label text="SUBJECT" styleClass="field-label"/>
+        <TextField fx:id="fldTestSubject" promptText="Test Email" styleClass="field-input"/>
+      </VBox>
+
+      <!-- Body -->
+      <VBox spacing="6">
+        <Label text="MESSAGE BODY" styleClass="field-label"/>
+        <TextArea fx:id="fldTestBody" prefRowCount="5" wrapText="true"
+                  style="-fx-background-color:#1E2430; -fx-text-fill:#F1F5F9; -fx-border-color:rgba(255,255,255,0.12); -fx-border-radius:6; -fx-background-radius:6; -fx-font-size:13px; -fx-padding:10 14;"/>
+      </VBox>
+
+      <!-- Send button -->
+      <HBox spacing="12" alignment="CENTER_LEFT">
+        <Button text="✉  Send Test Email" styleClass="btn-secondary" onAction="#handleSendTest" prefWidth="200"/>
+        <Label text="Uses current form values — no need to save first." styleClass="hint-label"/>
+      </HBox>
+    </VBox>
+
+    <!-- Help box -->
+    <VBox styleClass="cost-preview" spacing="8">
+      <Label text="💡  GMAIL QUICK SETUP" styleClass="field-label"/>
+      <Label wrapText="true" maxWidth="Infinity" styleClass="vehicle-info-label"
+             text="1. Go to myaccount.google.com → Security → 2-Step Verification → App Passwords&#10;2. Create an App Password for &quot;Mail&quot;&#10;3. Paste the 16-character code in the Password field above&#10;4. Host: smtp.gmail.com | Port: 587 | Enable Auth + STARTTLS"/>
+    </VBox>
+
+    <VBox.margin><Insets bottom="24"/></VBox.margin>
+  </VBox>
+</ScrollPane>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="soft.eng.presentation.fx.MainShellController">
+
+  <!-- TOP BAR -->
+  <top>
+    <HBox styleClass="top-bar" alignment="CENTER_LEFT" spacing="16">
+      <Label text="&#x1F697;  VRMS" styleClass="app-wordmark"/>
+      <Region HBox.hgrow="ALWAYS"/>
+      <Label text="Vehicle Rental Management System" styleClass="top-subtitle"/>
+      <Region HBox.hgrow="ALWAYS"/>
+      <Label fx:id="userLabel" styleClass="user-chip" text="manager"/>
+      <Button text="Log out" styleClass="btn-logout" onAction="#handleLogout"/>
+    </HBox>
+  </top>
+
+  <!-- SIDEBAR -->
+  <left>
+    <VBox fx:id="sidebar" styleClass="sidebar" spacing="4" prefWidth="220">
+
+      <Label text="NAVIGATION" styleClass="sidebar-section-label"/>
+
+      <Button fx:id="btnDashboard" text="&#x1F4C8;   Dashboard"
+              styleClass="nav-btn" maxWidth="Infinity" onAction="#showDashboard"/>
+      <Button fx:id="btnVehicles" text="&#x1F697;   Vehicles"
+              styleClass="nav-btn" maxWidth="Infinity" onAction="#showVehicles"/>
+      <Button fx:id="btnRent" text="&#x1F511;   Rent Vehicle"
+              styleClass="nav-btn" maxWidth="Infinity" onAction="#showRentVehicle"/>
+      <Button fx:id="btnReturn" text="&#x21A9;   Return Vehicle"
+              styleClass="nav-btn" maxWidth="Infinity" onAction="#showReturnVehicle"/>
+      <Button fx:id="btnHistory" text="&#x1F5D3;   Rental History"
+              styleClass="nav-btn" maxWidth="Infinity" onAction="#showHistory"/>
+
+      <Label text="SYSTEM" styleClass="sidebar-section-label"/>
+
+      <Button fx:id="btnEmail" text="&#x2709;   Email Settings"
+              styleClass="nav-btn" maxWidth="Infinity" onAction="#showEmailSettings"/>
+
+      <Region VBox.vgrow="ALWAYS"/>
+      <Label text="v2.0 Pro" styleClass="sidebar-version"/>
+    </VBox>
+  </left>
+
+  <!-- CONTENT AREA with toast overlay -->
+  <center>
+    <StackPane fx:id="toastOverlay">
+      <StackPane fx:id="contentArea" styleClass="content-area"/>
+    </StackPane>
+  </center>
+
+</BorderPane>

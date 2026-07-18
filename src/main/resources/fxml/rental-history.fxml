@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="soft.eng.presentation.fx.RentalHistoryController"
+      styleClass="page-root" spacing="0">
+
+  <HBox styleClass="page-header" alignment="CENTER_LEFT" spacing="12">
+    <VBox spacing="2" HBox.hgrow="ALWAYS">
+      <Label text="Rental History" styleClass="page-title"/>
+      <Label fx:id="countLabel" text="" styleClass="page-subtitle"/>
+    </VBox>
+    <TextField fx:id="searchField" styleClass="search-field"
+               promptText="🔍  Search customer, vehicle, ID..." prefWidth="280"/>
+    <Button text="↻  Refresh" styleClass="btn-ghost" onAction="#handleRefresh"/>
+  </HBox>
+
+  <TableView fx:id="table" VBox.vgrow="ALWAYS" styleClass="pro-table">
+    <columns>
+      <TableColumn fx:id="colId"       text="Rental ID"  prefWidth="110"/>
+      <TableColumn fx:id="colCustomer" text="Customer"   prefWidth="170"/>
+      <TableColumn fx:id="colVehicle"  text="Vehicle"    prefWidth="150"/>
+      <TableColumn fx:id="colStart"    text="Start"      prefWidth="110"/>
+      <TableColumn fx:id="colEnd"      text="End"        prefWidth="110"/>
+      <TableColumn fx:id="colDays"     text="Days"       prefWidth="70"/>
+      <TableColumn fx:id="colStatus"   text="Status"     prefWidth="110"/>
+    </columns>
+  </TableView>
+
+</VBox>

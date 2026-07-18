@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="soft.eng.presentation.fx.LoginController"
+      styleClass="login-root">
+
+  <!-- LEFT: Brand panel -->
+  <VBox styleClass="brand-panel" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="0">
+    <VBox alignment="CENTER_LEFT" spacing="20" maxWidth="380">
+      <padding><Insets top="60" right="60" bottom="60" left="60"/></padding>
+
+      <Label text="VRMS" styleClass="brand-logo"/>
+      <Label text="Vehicle Rental" styleClass="brand-title-line1"/>
+      <Label text="Management System" styleClass="brand-title-line2"/>
+      <Label text="Track every vehicle, every rental, every mile &#8212; in one professional dashboard."
+             styleClass="brand-tagline" wrapText="true"/>
+
+      <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-padding: 24 0 0 0;">
+        <VBox styleClass="stat-mini" spacing="4" alignment="CENTER">
+          <Label text="8" styleClass="stat-mini-num"/>
+          <Label text="Vehicles" styleClass="stat-mini-label"/>
+        </VBox>
+        <VBox styleClass="stat-mini" spacing="4" alignment="CENTER">
+          <Label text="5" styleClass="stat-mini-num stat-mini-cyan"/>
+          <Label text="Available" styleClass="stat-mini-label"/>
+        </VBox>
+        <VBox styleClass="stat-mini" spacing="4" alignment="CENTER">
+          <Label text="24/7" styleClass="stat-mini-num stat-mini-green"/>
+          <Label text="Access" styleClass="stat-mini-label"/>
+        </VBox>
+      </HBox>
+    </VBox>
+  </VBox>
+
+  <!-- RIGHT: Form panel -->
+  <StackPane styleClass="form-panel" HBox.hgrow="ALWAYS" alignment="CENTER">
+    <VBox styleClass="form-card" maxWidth="380" spacing="0" alignment="TOP_LEFT">
+      <padding><Insets top="48" right="44" bottom="48" left="44"/></padding>
+
+      <Label text="Welcome back 👋" styleClass="form-greeting"/>
+      <Label text="Sign in to manage your fleet" styleClass="form-subtitle"/>
+
+      <Region prefHeight="32"/>
+
+      <Label text="USERNAME" styleClass="field-label"/>
+      <Region prefHeight="6"/>
+      <TextField fx:id="usernameField" styleClass="field-input" promptText="Enter your username"/>
+
+      <Region prefHeight="18"/>
+
+      <Label text="PASSWORD" styleClass="field-label"/>
+      <Region prefHeight="6"/>
+      <PasswordField fx:id="passwordField" styleClass="field-input" promptText="Enter your password"/>
+
+      <Region prefHeight="10"/>
+      <Label fx:id="errorLabel" styleClass="error-label" text="" wrapText="true"/>
+      <Region prefHeight="20"/>
+
+      <Button fx:id="loginButton" text="Sign In" styleClass="btn-primary"
+              maxWidth="Infinity" onAction="#handleLogin"/>
+
+      <Region prefHeight="16"/>
+      <Label text="Default: admin / admin123" styleClass="hint-label"/>
+    </VBox>
+  </StackPane>
+
+</HBox>

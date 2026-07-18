@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="soft.eng.presentation.fx.RentVehicleController"
+      styleClass="page-root" spacing="0">
+
+  <HBox styleClass="page-header" alignment="CENTER_LEFT">
+    <VBox spacing="2" HBox.hgrow="ALWAYS">
+      <Label text="Rent a Vehicle" styleClass="page-title"/>
+      <Label text="Fill in customer details, pick a vehicle and dates" styleClass="page-subtitle"/>
+    </VBox>
+  </HBox>
+
+  <ScrollPane fitToWidth="true" styleClass="form-scroll" VBox.vgrow="ALWAYS">
+    <VBox spacing="20" style="-fx-padding: 4 4 24 4;">
+
+      <!-- Customer Info Card -->
+      <VBox styleClass="form-section" spacing="16">
+        <Label text="Customer Information" styleClass="section-title"/>
+        <GridPane hgap="16" vgap="14">
+          <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+          </columnConstraints>
+
+          <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Label text="CUSTOMER ID" styleClass="field-label"/>
+            <TextField fx:id="fieldCustomerId" styleClass="field-input" promptText="e.g. CUST-001"/>
+          </VBox>
+          <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Label text="FULL NAME" styleClass="field-label"/>
+            <TextField fx:id="fieldFullName" styleClass="field-input" promptText="e.g. John Smith"/>
+          </VBox>
+          <VBox spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Label text="EMAIL ADDRESS" styleClass="field-label"/>
+            <TextField fx:id="fieldEmail" styleClass="field-input" promptText="e.g. john@example.com"/>
+          </VBox>
+          <VBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label text="AGE" styleClass="field-label"/>
+            <TextField fx:id="fieldAge" styleClass="field-input" promptText="e.g. 28"/>
+          </VBox>
+          <CheckBox fx:id="checkSpecialLicense" text="Has special truck / heavy vehicle license"
+                    styleClass="form-checkbox" GridPane.columnIndex="0" GridPane.rowIndex="2"
+                    GridPane.columnSpan="2"/>
+        </GridPane>
+      </VBox>
+
+      <!-- Vehicle & Dates Card -->
+      <VBox styleClass="form-section" spacing="16">
+        <Label text="Vehicle &amp; Rental Period" styleClass="section-title"/>
+        <VBox spacing="6">
+          <Label text="SELECT VEHICLE" styleClass="field-label"/>
+          <ComboBox fx:id="comboVehicle" styleClass="field-combo" maxWidth="Infinity"
+                    promptText="Choose an available vehicle..."/>
+          <Label fx:id="labelVehicleInfo" styleClass="vehicle-info-label" text=""/>
+        </VBox>
+
+        <HBox spacing="16">
+          <VBox spacing="6" HBox.hgrow="ALWAYS">
+            <Label text="START DATE" styleClass="field-label"/>
+            <DatePicker fx:id="pickerStart" styleClass="field-input" maxWidth="Infinity"/>
+          </VBox>
+          <VBox spacing="6" HBox.hgrow="ALWAYS">
+            <Label text="END DATE" styleClass="field-label"/>
+            <DatePicker fx:id="pickerEnd" styleClass="field-input" maxWidth="Infinity"/>
+          </VBox>
+        </HBox>
+
+        <HBox styleClass="cost-preview" alignment="CENTER_LEFT" spacing="12">
+          <Label text="Estimated Cost:" styleClass="cost-preview-label"/>
+          <Label fx:id="labelEstCost" text="-" styleClass="cost-preview-value"/>
+        </HBox>
+      </VBox>
+
+      <!-- Actions -->
+      <HBox spacing="12" alignment="CENTER_RIGHT">
+        <Button text="Clear Form" styleClass="btn-ghost" onAction="#handleClear"/>
+        <Button text="🔑  Confirm Rental" styleClass="btn-primary" onAction="#handleRent"/>
+      </HBox>
+
+    </VBox>
+  </ScrollPane>
+</VBox>

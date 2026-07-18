@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="soft.eng.presentation.fx.VehiclesController"
+      styleClass="page-root" spacing="0">
+
+  <HBox styleClass="page-header" alignment="CENTER_LEFT" spacing="12">
+    <VBox spacing="2" HBox.hgrow="ALWAYS">
+      <Label text="Fleet Vehicles" styleClass="page-title"/>
+      <Label fx:id="countLabel" text="" styleClass="page-subtitle"/>
+    </VBox>
+    <TextField fx:id="searchField" styleClass="search-field"
+               promptText="🔍  Search by brand, model, type..." prefWidth="280"/>
+    <Button text="↻  Refresh" styleClass="btn-ghost" onAction="#handleRefresh"/>
+  </HBox>
+
+  <TableView fx:id="table" VBox.vgrow="ALWAYS" styleClass="pro-table">
+    <columns>
+      <TableColumn fx:id="colId"     text="Vehicle ID"   prefWidth="120"/>
+      <TableColumn fx:id="colType"   text="Type"         prefWidth="110"/>
+      <TableColumn fx:id="colBrand"  text="Brand"        prefWidth="120"/>
+      <TableColumn fx:id="colModel"  text="Model"        prefWidth="140"/>
+      <TableColumn fx:id="colRate"   text="Daily Rate"   prefWidth="130"/>
+      <TableColumn fx:id="colStatus" text="Status"       prefWidth="130"/>
+    </columns>
+  </TableView>
+
+</VBox>

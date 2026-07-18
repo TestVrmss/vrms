@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="soft.eng.presentation.fx.DashboardController"
+      styleClass="page-root" spacing="0">
+
+  <!-- Page header -->
+  <HBox styleClass="page-header" alignment="CENTER_LEFT" spacing="12">
+    <VBox spacing="2" HBox.hgrow="ALWAYS">
+      <Label text="Dashboard" styleClass="page-title"/>
+      <Label fx:id="lastUpdated" text="" styleClass="page-subtitle"/>
+    </VBox>
+    <Button text="🔔  Send Reminders" styleClass="btn-secondary" onAction="#handleSendReminders"/>
+    <Button text="↻  Refresh" styleClass="btn-ghost" onAction="#handleRefresh"/>
+  </HBox>
+
+  <!-- KPI Cards -->
+  <HBox spacing="16" style="-fx-padding: 0 0 20 0;">
+    <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" spacing="8">
+      <Label text="AVAILABLE VEHICLES" styleClass="kpi-label"/>
+      <Label fx:id="availableCount" text="-" styleClass="kpi-value kpi-amber"/>
+      <Label text="Ready to rent" styleClass="kpi-sub"/>
+    </VBox>
+    <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" spacing="8">
+      <Label text="CURRENTLY RENTED" styleClass="kpi-label"/>
+      <Label fx:id="rentedCount" text="-" styleClass="kpi-value kpi-cyan"/>
+      <Label text="Active contracts" styleClass="kpi-sub"/>
+    </VBox>
+    <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" spacing="8">
+      <Label text="TOTAL FLEET" styleClass="kpi-label"/>
+      <Label fx:id="totalVehiclesCount" text="-" styleClass="kpi-value kpi-green"/>
+      <Label text="All vehicles" styleClass="kpi-sub"/>
+    </VBox>
+    <VBox styleClass="kpi-card kpi-card-warn" HBox.hgrow="ALWAYS" spacing="8">
+      <Label text="EXPIRING SOON" styleClass="kpi-label"/>
+      <Label fx:id="expiringCount" text="-" styleClass="kpi-value kpi-red"/>
+      <Label text="Within 3 days" styleClass="kpi-sub"/>
+    </VBox>
+  </HBox>
+
+  <!-- Active Rentals table -->
+  <VBox styleClass="table-section" VBox.vgrow="ALWAYS" spacing="12">
+    <Label text="Active Rentals" styleClass="section-title"/>
+    <TableView fx:id="rentalsTable" VBox.vgrow="ALWAYS" styleClass="pro-table">
+      <columns>
+        <TableColumn fx:id="colRentalId"  text="Rental ID"   prefWidth="110"/>
+        <TableColumn fx:id="colCustomer"  text="Customer"    prefWidth="180"/>
+        <TableColumn fx:id="colVehicle"   text="Vehicle"     prefWidth="160"/>
+        <TableColumn fx:id="colStart"     text="Start"       prefWidth="110"/>
+        <TableColumn fx:id="colEnd"       text="End"         prefWidth="110"/>
+        <TableColumn fx:id="colStatus"    text="Status"      prefWidth="110"/>
+      </columns>
+    </TableView>
+  </VBox>
+
+</VBox>

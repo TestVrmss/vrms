@@ -19,6 +19,7 @@
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
         <mockito.version>5.11.0</mockito.version>
         <jacoco.version>0.8.12</jacoco.version>
+<javafx.version>21.0.2</javafx.version>
 
     </properties>
 
@@ -76,6 +77,17 @@
             <version>3.2.0</version>
         </dependency>
 
+<dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-controls</artifactId>
+    <version>${javafx.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-fxml</artifactId>
+    <version>${javafx.version}</version>
+</dependency>
+
     </dependencies>
 
     <build>
@@ -91,6 +103,15 @@
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
+
+<plugin>
+    <groupId>org.openjfx</groupId>
+    <artifactId>javafx-maven-plugin</artifactId>
+    <version>0.0.8</version>
+    <configuration>
+        <mainClass>soft.eng.presentation.fx.App</mainClass>
+    </configuration>
+</plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="soft.eng.presentation.fx.ReturnVehicleController"
+      styleClass="page-root" spacing="0">
+
+  <HBox styleClass="page-header" alignment="CENTER_LEFT">
+    <VBox spacing="2">
+      <Label text="Return a Vehicle" styleClass="page-title"/>
+      <Label text="Look up the rental and confirm the return" styleClass="page-subtitle"/>
+    </VBox>
+  </HBox>
+
+  <VBox spacing="20">
+
+    <!-- Lookup section -->
+    <VBox styleClass="form-section" spacing="16">
+      <Label text="Rental Lookup" styleClass="section-title"/>
+      <HBox spacing="12" alignment="BOTTOM_LEFT">
+        <VBox spacing="6" HBox.hgrow="ALWAYS">
+          <Label text="RENTAL ID (or prefix)" styleClass="field-label"/>
+          <TextField fx:id="fieldRentalId" styleClass="field-input"
+                     promptText="Enter rental ID or first 8 characters..."/>
+        </VBox>
+        <Button text="🔍  Look Up" styleClass="btn-secondary" onAction="#handleLookup"/>
+      </HBox>
+    </VBox>
+
+    <!-- Rental info panel (hidden until found) -->
+    <VBox fx:id="rentalInfoBox" styleClass="form-section info-panel" spacing="16">
+      <Label text="Rental Details" styleClass="section-title"/>
+
+      <GridPane hgap="24" vgap="12">
+        <columnConstraints>
+          <ColumnConstraints minWidth="140"/>
+          <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Customer" styleClass="info-key"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label fx:id="labelCustomer" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Vehicle"  styleClass="info-key"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Label fx:id="labelVehicle"  styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Start Date" styleClass="info-key" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Label fx:id="labelStart"   styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="End Date"   styleClass="info-key" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Label fx:id="labelEnd"     styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Duration"   styleClass="info-key" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <Label fx:id="labelDays"    styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+        <Label text="Status"     styleClass="info-key" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <Label fx:id="labelStatus"  styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+      </GridPane>
+
+      <Separator/>
+
+      <HBox styleClass="cost-preview" alignment="CENTER_LEFT" spacing="12">
+        <Label text="Total Charge (as of today):" styleClass="cost-preview-label"/>
+        <Label fx:id="labelEstCost" text="-" styleClass="cost-preview-value"/>
+      </HBox>
+
+      <HBox alignment="CENTER_RIGHT">
+        <Button text="✔  Confirm Return" styleClass="btn-primary" onAction="#handleConfirmReturn"/>
+      </HBox>
+    </VBox>
+
+  </VBox>
+</VBox>
