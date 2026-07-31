@@ -1,6 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -12,14 +13,19 @@
 
     <properties>
 
+        <!-- Java version -->
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <!-- Dependencies versions -->
         <junit.jupiter.version>5.10.2</junit.jupiter.version>
         <mockito.version>5.11.0</mockito.version>
         <jacoco.version>0.8.12</jacoco.version>
-<javafx.version>21.0.2</javafx.version>
+        <javafx.version>21.0.2</javafx.version>
+
+        <!-- SonarCloud organization -->
+        <sonar.organization>testvrmss</sonar.organization>
 
     </properties>
 
@@ -33,7 +39,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito -->
+        <!-- Mockito Core -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -41,6 +47,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Mockito with JUnit 5 -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
@@ -49,13 +56,12 @@
         </dependency>
 
         <!-- يسمح بعمل Mock للـ static methods مثل Transport.send() -->
-       <dependency>
-    <groupId>org.mockito</groupId>
-    <artifactId>mockito-inline</artifactId>
-    <version>5.2.0</version>
-    <scope>test</scope>
-</dependency>
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>5.2.0</version>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Jakarta Mail -->
         <dependency>
@@ -64,6 +70,7 @@
             <version>2.0.3</version>
         </dependency>
 
+        <!-- Angus Activation -->
         <dependency>
             <groupId>org.eclipse.angus</groupId>
             <artifactId>angus-activation</artifactId>
@@ -77,16 +84,19 @@
             <version>3.2.0</version>
         </dependency>
 
-<dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-controls</artifactId>
-    <version>${javafx.version}</version>
-</dependency>
-<dependency>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-fxml</artifactId>
-    <version>${javafx.version}</version>
-</dependency>
+        <!-- JavaFX Controls -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+
+        <!-- JavaFX FXML -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
 
     </dependencies>
 
@@ -94,31 +104,37 @@
 
         <plugins>
 
+            <!-- Java Compiler -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
+
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
 
-<plugin>
-    <groupId>org.openjfx</groupId>
-    <artifactId>javafx-maven-plugin</artifactId>
-    <version>0.0.8</version>
-    <configuration>
-        <mainClass>soft.eng.presentation.fx.App</mainClass>
-    </configuration>
-</plugin>
+            <!-- JavaFX -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
 
+                <configuration>
+                    <mainClass>soft.eng.presentation.fx.App</mainClass>
+                </configuration>
+            </plugin>
+
+            <!-- تشغيل الاختبارات -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
             </plugin>
 
+            <!-- JaCoCo Code Coverage -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -126,22 +142,26 @@
 
                 <executions>
 
+                    <!-- تجهيز JaCoCo قبل تشغيل الاختبارات -->
                     <execution>
+                        <id>prepare-agent</id>
+
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
 
+                    <!-- إنشاء تقرير Coverage بعد تشغيل الاختبارات -->
                     <execution>
-                        <id>report</id>
-                        <phase>test</phase>
+                        <id>generate-report</id>
+                        <phase>verify</phase>
+
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
 
                 </executions>
-
             </plugin>
 
         </plugins>
