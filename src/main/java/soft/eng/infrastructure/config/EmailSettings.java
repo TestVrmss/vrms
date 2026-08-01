@@ -62,10 +62,6 @@ public final class EmailSettings {
                 "subjectPrefix must not be null"
         ).trim();
 
-        /*
-         * بيانات البريد مطلوبة فقط عندما تكون
-         * خدمة إرسال البريد مفعلة.
-         */
         if (enabled && (
                 this.host.isBlank()
                         || this.username.isBlank()
@@ -79,6 +75,7 @@ public final class EmailSettings {
         }
     }
 
+    
     public static EmailSettings from(ApplicationConfig config) {
 
         Objects.requireNonNull(
@@ -125,15 +122,7 @@ public final class EmailSettings {
         );
     }
 
-    /**
-     * Reads a boolean setting safely.
-     *
-     * Accepted values:
-     * true  -> true
-     * false -> false
-     *
-     * Missing or blank values use the supplied default value.
-     */
+   
     private static boolean readBoolean(
             ApplicationConfig config,
             String key,
