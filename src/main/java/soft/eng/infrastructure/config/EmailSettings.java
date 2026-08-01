@@ -5,79 +5,162 @@ import java.util.Objects;
 public final class EmailSettings {
 
     private final boolean enabled;
-
     private final String host;
-
     private final int port;
-
     private final boolean authenticationEnabled;
-
     private final boolean startTlsEnabled;
-
     private final String username;
-
     private final String password;
-
     private final String fromAddress;
-
     private final String subjectPrefix;
 
-    public EmailSettings(boolean enabled,
-                         String host,
-                         int port,
-                         boolean authenticationEnabled,
-                         boolean startTlsEnabled,
-                         String username,
-                         String password,
-                         String fromAddress,
-                         String subjectPrefix) {
+    public EmailSettings(
+            boolean enabled,
+            String host,
+            int port,
+            boolean authenticationEnabled,
+            boolean startTlsEnabled,
+            String username,
+            String password,
+            String fromAddress,
+            String subjectPrefix) {
 
         if (port <= 0 || port > 65535) {
             throw new IllegalArgumentException(
-                    "port must be between 1 and 65535");
+                    "port must be between 1 and 65535"
+            );
         }
 
         this.enabled = enabled;
-        this.host = Objects.requireNonNull(host,
-                "host must not be null").trim();
+
+        this.host = Objects.requireNonNull(
+                host,
+                "host must not be null"
+        ).trim();
+
         this.port = port;
         this.authenticationEnabled = authenticationEnabled;
         this.startTlsEnabled = startTlsEnabled;
-        this.username = Objects.requireNonNull(username,
-                "username must not be null").trim();
-        this.password = Objects.requireNonNull(password,
-                "password must not be null").trim();
-        this.fromAddress = Objects.requireNonNull(fromAddress,
-                "fromAddress must not be null").trim();
-        this.subjectPrefix = Objects.requireNonNull(subjectPrefix,
-                "subjectPrefix must not be null").trim();
 
-        if (enabled
-                && (this.host.isBlank()
-                || this.username.isBlank()
-                || this.password.isBlank()
-                || this.fromAddress.isBlank())) {
+        this.username = Objects.requireNonNull(
+                username,
+                "username must not be null"
+        ).trim();
+
+        this.password = Objects.requireNonNull(
+                password,
+                "password must not be null"
+        ).trim();
+
+        this.fromAddress = Objects.requireNonNull(
+                fromAddress,
+                "fromAddress must not be null"
+        ).trim();
+
+        this.subjectPrefix = Objects.requireNonNull(
+                subjectPrefix,
+                "subjectPrefix must not be null"
+        ).trim();
+
+        /*
+         * بيانات البريد مطلوبة فقط عندما تكون
+         * خدمة إرسال البريد مفعلة.
+         */
+        if (enabled && (
+                this.host.isBlank()
+                        || this.username.isBlank()
+                        || this.password.isBlank()
+                        || this.fromAddress.isBlank())) {
 
             throw new IllegalStateException(
-                    "enabled email requires host, username, password and from address");
+                    "enabled email requires host, username, "
+                            + "password and from address"
+            );
         }
     }
 
     public static EmailSettings from(ApplicationConfig config) {
 
-        Objects.requireNonNull(config,
-                "config must not be null");
+        Objects.requireNonNull(
+                config,
+                "config must not be null"
+        );
 
         return new EmailSettings(
-                config.getBoolean("mail.enabled", false),
-                config.getString("mail.smtp.host", "smtp.gmail.com"),
-                config.getInt("mail.smtp.port", 587),
-                config.getBoolean("mail.smtp.auth", true),
-                config.getBoolean("mail.smtp.starttls.enable", true),
-                config.getString("mail.username", ""),
-                config.getString("mail.password", ""),
-                config.getString("mail.from", ""),
-                config.getString("mail.subject.prefix", "[VRMS]"));
+                readBoolean(config, "mail.enabled", false),
+                config.getString(
+                        "mail.smtp.host",
+                        "smtp.gmail.com"
+                ),
+                config.getInt(
+                        "mail.smtp.port",
+                        587
+                ),
+                readBoolean(
+                        config,
+                        "mail.smtp.auth",
+                        true
+                ),
+                readBoolean(
+                        config,
+                        "mail.smtp.starttls.enable",
+                        true
+                ),
+                config.getString(
+                        "mail.username",
+                        ""
+                ),
+                config.getString(
+                        "mail.password",
+                        ""
+                ),
+                config.getString(
+                        "mail.from",
+                        ""
+                ),
+                config.getString(
+                        "mail.subject.prefix",
+                        "[VRMS]"
+                )
+        );
+    }
+
+    /**
+     * Reads a boolean setting safely.
+     *
+     * Accepted values:
+     * true  -> true
+     * false -> false
+     *
+     * Missing or blank values use the supplied default value.
+     */
+    private static boolean readBoolean(
+            ApplicationConfig config,
+            String key,
+            boolean defaultValue) {
+
+        String value = config.getString(
+                key,
+                Boolean.toString(defaultValue)
+        );
+
+        if (value == null || value.isBlank()) {
+            return defaultValue;
+        }
+
+        String normalizedValue = value.trim();
+
+        if ("true".equalsIgnoreCase(normalizedValue)) {
+            return true;
+        }
+
+        if ("false".equalsIgnoreCase(normalizedValue)) {
+            return false;
+        }
+
+        throw new IllegalArgumentException(
+                key + " must be either true or false"
+        );
     }
 
     public boolean isEnabled() {
