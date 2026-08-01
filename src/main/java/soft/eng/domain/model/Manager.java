@@ -50,7 +50,5 @@ public final class Manager {
         return "Manager{username='" + username + "'}";
     }
 
-	public boolean hasPassword(String password2) {
-		return false;
-	}
+	
 }
