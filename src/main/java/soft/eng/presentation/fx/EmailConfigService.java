@@ -1,9 +1,11 @@
 package soft.eng.presentation.fx;
 
-import java.io.*;
-import java.nio.file.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
-import soft.eng.infrastructure.config.EmailConfiguration;
 import soft.eng.infrastructure.config.EmailSettings;
 import soft.eng.infrastructure.email.JavaMailGateway;
 import soft.eng.infrastructure.email.MailGateway;
@@ -57,18 +59,11 @@ public final class EmailConfigService {
     }
 
     public MailGateway buildGateway() {
-    	EmailConfiguration configuration = new EmailConfiguration(
-    	        isEnabled(),
-    	        getHost(),
-    	        getPort(),
-    	        isAuth(),
-    	        isStartTls(),
-    	        getUsername(),
-    	        passwordInMemory,
-    	        getFromAddress().isBlank() ? getUsername() : getFromAddress(),
-    	        getSubjectPrefix());
-
-    	return new JavaMailGateway(new EmailSettings(configuration));
+        return new JavaMailGateway(new EmailSettings(
+            isEnabled(), getHost(), getPort(), isAuth(), isStartTls(),
+            getUsername(), passwordInMemory,
+            getFromAddress().isBlank() ? getUsername() : getFromAddress(),
+            getSubjectPrefix()));
     }
 
     private String  str(String k, String d)  { return props.getProperty(k, d).trim(); }

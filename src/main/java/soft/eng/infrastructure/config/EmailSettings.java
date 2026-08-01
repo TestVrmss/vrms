@@ -14,7 +14,7 @@ public final class EmailSettings {
     private final String fromAddress;
     private final String subjectPrefix;
 
-    private  EmailSettings(
+    public EmailSettings(
             boolean enabled,
             String host,
             int port,
@@ -31,7 +31,6 @@ public final class EmailSettings {
             );
         }
 
-        
         this.enabled = enabled;
 
         this.host = Objects.requireNonNull(
@@ -75,21 +74,7 @@ public final class EmailSettings {
             );
         }
     }
-    
-    public EmailSettings(EmailConfiguration configuration) {
-        this(
-                configuration.isEnabled(),
-                configuration.getHost(),
-                configuration.getPort(),
-                configuration.isAuthenticationEnabled(),
-                configuration.isStartTlsEnabled(),
-                configuration.getUsername(),
-                configuration.getPassword(),
-                configuration.getFromAddress(),
-                configuration.getSubjectPrefix()
-        );
-    }
-    
+
     public static EmailSettings from(ApplicationConfig config) {
 
         Objects.requireNonNull(
@@ -136,7 +121,6 @@ public final class EmailSettings {
         );
     }
 
-   
     private static boolean readBoolean(
             ApplicationConfig config,
             String key,
