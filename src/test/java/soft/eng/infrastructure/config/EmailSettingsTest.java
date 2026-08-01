@@ -61,6 +61,13 @@ class EmailSettingsTest {
 
     @Test
     void buildsDisabledSettingsFromConfig() {
+<<<<<<< HEAD
+        EmailSettings settings = EmailSettings.from(ApplicationConfig.getInstance());
+        assertTrue(settings.isEnabled()); 
+        assertEquals(587, settings.getPort());
+        
+        
+=======
 
         /*
          * ننشئ إعدادات خاصة بالاختبار،
@@ -88,6 +95,7 @@ class EmailSettingsTest {
                 "smtp.gmail.com",
                 settings.getHost()
         );
+>>>>>>> origin/main
     }
 
     @Test
