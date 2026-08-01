@@ -6,34 +6,43 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.Test;
 
+import soft.eng.infrastructure.config.EmailConfiguration;
 import soft.eng.infrastructure.config.EmailSettings;
 
 class JavaMailGatewayTest {
 
     private EmailSettings disabledSettings() {
-        return new EmailSettings(
-                false,
-                "smtp.gmail.com",
-                587,
-                true,
-                true,
-                "user@gmail.com",
-                "password",
-                "user@gmail.com",
-                "[VRMS]");
+
+        EmailConfiguration configuration =
+                new EmailConfiguration(
+                        false,
+                        "smtp.gmail.com",
+                        587,
+                        true,
+                        true,
+                        "user@gmail.com",
+                        "password",
+                        "user@gmail.com",
+                        "[VRMS]");
+
+        return new EmailSettings(configuration);
     }
 
     private EmailSettings enabledSettings() {
-        return new EmailSettings(
-                true,
-                "smtp.gmail.com",
-                587,
-                false,
-                true,
-                "user@gmail.com",
-                "password",
-                "user@gmail.com",
-                "[VRMS]");
+
+        EmailConfiguration configuration =
+                new EmailConfiguration(
+                        true,
+                        "smtp.gmail.com",
+                        587,
+                        false,
+                        true,
+                        "user@gmail.com",
+                        "password",
+                        "user@gmail.com",
+                        "[VRMS]");
+
+        return new EmailSettings(configuration);
     }
 
     static class FakeGateway extends JavaMailGateway {
