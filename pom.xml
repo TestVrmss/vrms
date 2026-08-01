@@ -21,6 +21,16 @@
         <jacoco.version>0.8.12</jacoco.version>
 <javafx.version>21.0.2</javafx.version>
 
+<sonar.coverage.exclusions>
+    **/soft/eng/presentation/**,
+    **/soft/eng/presentation/fx/**
+</sonar.coverage.exclusions>
+
+<sonar.exclusions>
+    **/soft/eng/presentation/**,
+    **/soft/eng/presentation/fx/**
+</sonar.exclusions>
+
     </properties>
 
     <dependencies>
