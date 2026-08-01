@@ -27,6 +27,16 @@
         <!-- SonarCloud organization -->
         <sonar.organization>testvrmss</sonar.organization>
 
+<sonar.coverage.exclusions>
+    **/soft/eng/presentation/**,
+    **/soft/eng/presentation/fx/**
+</sonar.coverage.exclusions>
+
+<sonar.exclusions>
+    **/soft/eng/presentation/**,
+    **/soft/eng/presentation/fx/**
+</sonar.exclusions>
+
     </properties>
 
     <dependencies>
