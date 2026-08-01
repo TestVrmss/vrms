@@ -49,46 +49,73 @@ class DefaultRentalValidationStrategyTest {
 
     @Test
     void rejectsInvalidGeneralRequests() {
-        Vehicle unavailable = car();
-        unavailable.rent();
-        assertThrows(IllegalStateException.class,
-                () -> strategy.validate(adult, unavailable, today, today, today));
-        assertThrows(IllegalArgumentException.class,
-                () -> strategy.validate(adult, car(), today.minusDays(1), today, today));
-        assertThrows(IllegalArgumentException.class,
-                () -> strategy.validate(adult, car(), today.plusDays(1), today, today));
-        assertThrows(IllegalArgumentException.class,
-                () -> strategy.validate(adult, car(), today, today.plusDays(30), today));
+    	 Vehicle unavailable = car();
+         unavailable.rent();
+
+         Vehicle availableCar = car();
+
+         assertThrows(IllegalStateException.class,
+                 () -> strategy.validate(adult, unavailable, today, today, today));
+
+         assertThrows(IllegalArgumentException.class,
+                 () -> strategy.validate(adult, availableCar, today.minusDays(1), today, today));
+
+         assertThrows(IllegalArgumentException.class,
+                 () -> strategy.validate(adult, availableCar, today.plusDays(1), today, today));
+
+         assertThrows(IllegalArgumentException.class,
+                 () -> strategy.validate(adult, availableCar, today, today.plusDays(30), today));
     }
 
 
     @Test
     void rejectsInvalidTypeSpecificRequests() {
-        Customer minor = new Customer("M", "Minor", "minor@example.com", 17, false);
+    	Customer minor = new Customer("M", "Minor", "minor@example.com", 17, false);
         Customer noLicense = new Customer("N", "No License", "n@example.com", 30, false);
+
         assertThrows(IllegalArgumentException.class,
                 () -> strategy.validate(minor,
                         new Motorcycle("M", "Honda", "CB", new BigDecimal("20")), today, today, today));
+
         assertThrows(IllegalArgumentException.class,
                 () -> strategy.validate(noLicense,
                         new Truck("T", "Volvo", "FM", new BigDecimal("100")), today, today, today));
+
         assertThrows(IllegalStateException.class,
                 () -> strategy.validate(adult,
                         new ElectricVehicle("E", "Tesla", "3", new BigDecimal("80"), 19), today, today, today));
+        	
     }
 
 
     @Test
     void rejectsInvalidConfigurationAndNulls() {
-        assertThrows(IllegalArgumentException.class, () -> new DefaultRentalValidationStrategy(0, 18, 20));
-        assertThrows(IllegalArgumentException.class, () -> new DefaultRentalValidationStrategy(30, -1, 20));
-        assertThrows(IllegalArgumentException.class, () -> new DefaultRentalValidationStrategy(30, 18, -1));
-        assertThrows(IllegalArgumentException.class, () -> new DefaultRentalValidationStrategy(30, 18, 101));
-        assertThrows(NullPointerException.class, () -> strategy.validate(null, car(), today, today, today));
-        assertThrows(NullPointerException.class, () -> strategy.validate(adult, null, today, today, today));
-        assertThrows(NullPointerException.class, () -> strategy.validate(adult, car(), null, today, today));
-        assertThrows(NullPointerException.class, () -> strategy.validate(adult, car(), today, null, today));
-        assertThrows(NullPointerException.class, () -> strategy.validate(adult, car(), today, today, null));
+    	 assertThrows(IllegalArgumentException.class,
+                 () -> new DefaultRentalValidationStrategy(0, 18, 20));
+
+         assertThrows(IllegalArgumentException.class,
+                 () -> new DefaultRentalValidationStrategy(30, -1, 20));
+
+         assertThrows(IllegalArgumentException.class,
+                 () -> new DefaultRentalValidationStrategy(30, 18, -1));
+
+         assertThrows(IllegalArgumentException.class,
+                 () -> new DefaultRentalValidationStrategy(30, 18, 101));
+
+         assertThrows(NullPointerException.class,
+                 () -> strategy.validate(null, car(), today, today, today));
+
+         assertThrows(NullPointerException.class,
+                 () -> strategy.validate(adult, null, today, today, today));
+
+         assertThrows(NullPointerException.class,
+                 () -> strategy.validate(adult, car(), null, today, today));
+
+         assertThrows(NullPointerException.class,
+                 () -> strategy.validate(adult, car(), today, null, today));
+
+         assertThrows(NullPointerException.class,
+                 () -> strategy.validate(adult, car(), today, today, null));
     }
 
     /** Creates a standard car. */
