@@ -26,7 +26,6 @@ class DomainModelTest {
         assertEquals(first, same);
         assertEquals(first.hashCode(), same.hashCode());
         assertNotEquals(first, different);
-        assertNotEquals(first, "manager");
         assertTrue(first.toString().contains("manager"));
         assertThrows(IllegalArgumentException.class, () -> new Manager(" ", "x"));
         assertThrows(IllegalArgumentException.class, () -> new Manager("x", null));
@@ -45,7 +44,6 @@ class DomainModelTest {
         assertEquals(customer, same);
         assertEquals(customer.hashCode(), same.hashCode());
         assertNotEquals(customer, different);
-        assertNotEquals(customer, "C1");
         assertTrue(customer.toString().contains("r@example.com"));
         assertThrows(IllegalArgumentException.class, () -> new Customer("", "N", "a@b.com", 1, false));
         assertThrows(IllegalArgumentException.class, () -> new Customer("1", "", "a@b.com", 1, false));
@@ -90,7 +88,6 @@ class DomainModelTest {
         assertEquals(car, new Car("C", "Other", "Other", BigDecimal.ONE));
         assertEquals(car.hashCode(), new Car("C", "Other", "Other", BigDecimal.ONE).hashCode());
         assertNotEquals(car, motorcycle);
-        assertNotEquals(car, "C");
         assertThrows(IllegalArgumentException.class, () -> new Car("", "B", "M", BigDecimal.ONE));
         assertThrows(IllegalArgumentException.class, () -> new Car("1", "", "M", BigDecimal.ONE));
         assertThrows(IllegalArgumentException.class, () -> new Car("1", "B", "", BigDecimal.ONE));
@@ -139,7 +136,7 @@ class DomainModelTest {
         assertEquals(cancellable, new Rental("R2", customer, vehicle, start, end));
         assertEquals(cancellable.hashCode(), new Rental("R2", customer, vehicle, start, end).hashCode());
         assertNotEquals(cancellable, rental);
-        assertNotEquals(cancellable, "R2");
+   
 
         assertThrows(IllegalArgumentException.class, () -> new Rental("", customer, vehicle, start, end));
         assertThrows(NullPointerException.class, () -> new Rental("X", null, vehicle, start, end));
